@@ -24,3 +24,13 @@ export const idtt = identity;
 export const values = function(list) {
   return map(list, identity);
 };
+
+export const args0 = identity;
+
+export const args1 = function(a, b) {
+  return b;
+}
+
+export const keys = function(list) {
+  return map(list, args1);
+}

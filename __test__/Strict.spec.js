@@ -19,7 +19,18 @@ describe('map', () => {
 describe('values', () => {
   test('usage', () => { 
     const obj = { id: 5, name: "JE", age: 27 };
-    console.log(_.values(obj))
     expect(_.values(obj)).toEqual([5, "JE", 27]);
   })
 });
+
+describe('keys', () => {
+  test('array', () => {
+    const array = [3, 2, 1];
+    expect(_.keys(array)).toEqual([0, 1, 2]);
+  })
+
+  test('object', () => {
+    const obj = { id: 5, name: "JE", age: 27 };
+    expect(_.keys(obj)).toEqual(['id', 'name', 'age']);
+  })
+})
