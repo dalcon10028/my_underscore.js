@@ -1,19 +1,10 @@
 import { isArrayLike } from "./Predicates";
 
-export const map = function(data, iteratee) {
-  const newList = [];
-  if (isArrayLike(data)) {
-    for (let i = 0, len = data.length; i < len; i++) {
-      newList.push(iteratee(data[i], i, data));
-    }
-  } else {
-    for (const key in data) {
-      if (data.hasOwnProperty(key))
-        newList.push(iteratee(data[key], key, data));
-    }
-  }
-  return newList;
-};
+export const map = bloop(function() {
+  return [];
+}, function(val, obj) {
+  return obj.push(val);
+});
 
 export const identity = function(v) {
   return v;
@@ -33,4 +24,25 @@ export const args1 = function(a, b) {
 
 export const keys = function(list) {
   return map(list, args1);
+}
+
+export const each = bloop(function(v) {
+  return v;
+}, function() {});
+
+function bloop(newData, body) {
+  return function(data, iteratee) {
+    const result = newData(data);
+    if (isArrayLike(data)) {
+      for (let i = 0, len = data.length; i < len; i++) {
+        body(iteratee(data[i], i, data), result);
+      }
+    } else {
+      for (const key in data) {
+        if (data.hasOwnProperty(key))
+          body(iteratee(data[key], key, data), result);
+      }
+    }
+    return result;
+  }
 }

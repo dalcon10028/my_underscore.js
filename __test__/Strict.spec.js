@@ -14,6 +14,12 @@ describe('map', () => {
     }.bind(5));
     expect(result).toEqual([5, 10, 15]);
   });
+
+  test('object', () => {
+    const obj = { id: 5, name: "JE", age: 27 };
+    expect(_.map(obj, v => v)).toEqual([5, 'JE', 27]);
+    expect(_.map(obj, _.idtt)).toEqual(_.values(obj));
+  })
 });
 
 describe('values', () => {
@@ -32,5 +38,12 @@ describe('keys', () => {
   test('object', () => {
     const obj = { id: 5, name: "JE", age: 27 };
     expect(_.keys(obj)).toEqual(['id', 'name', 'age']);
+  })
+})
+
+describe('each', () => {
+  test('console', () => {
+    const array = [1, 2, 3];
+    _.each(array, console.log)
   })
 })
