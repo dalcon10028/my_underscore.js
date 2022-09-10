@@ -9,8 +9,18 @@ export const map = function(data, iteratee) {
   } else {
     for (const key in data) {
       if (data.hasOwnProperty(key))
-        newList.push(data[key], key, data);
+        newList.push(iteratee(data[key], key, data));
     }
   }
   return newList;
-}
+};
+
+export const identity = function(v) {
+  return v;
+};
+
+export const idtt = identity;
+
+export const values = function(list) {
+  return map(list, identity);
+};

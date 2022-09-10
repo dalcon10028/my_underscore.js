@@ -14,4 +14,12 @@ describe('map', () => {
     }.bind(5));
     expect(result).toEqual([5, 10, 15]);
   });
-})
+});
+
+describe('values', () => {
+  test('usage', () => { 
+    const obj = { id: 5, name: "JE", age: 27 };
+    console.log(_.values(obj))
+    expect(_.values(obj)).toEqual([5, "JE", 27]);
+  })
+});
