@@ -1,10 +1,13 @@
-import { isArrayLike } from "./Predicates";
+import * as _ from "./Predicates";
 
-export const map = bloop(function() {
-  return [];
-}, function(val, obj) {
-  return obj.push(val);
-});
+export const array = function() { return [] };
+
+export const push_to = function(val, obj) {
+  obj.push(val);
+  return val;
+};
+
+export const noop = function() {};
 
 export const identity = function(v) {
   return v;
@@ -12,37 +15,38 @@ export const identity = function(v) {
 
 export const idtt = identity;
 
-export const values = function(list) {
-  return map(list, identity);
-};
-
 export const args0 = identity;
 
 export const args1 = function(a, b) {
   return b;
 }
 
-export const keys = function(list) {
-  return map(list, args1);
-}
+export const keys = function(data) {
+  return _.isObject(data) ? Object.keys(data) : [];
+};
 
-export const each = bloop(function(v) {
-  return v;
-}, function() {});
-
-function bloop(newData, body) {
+export const bloop = function(newData, body) {
   return function(data, iteratee) {
     const result = newData(data);
-    if (isArrayLike(data)) {
+    if (_.isArrayLike(data)) {
       for (let i = 0, len = data.length; i < len; i++) {
         body(iteratee(data[i], i, data), result);
       }
     } else {
-      for (const key in data) {
-        if (data.hasOwnProperty(key))
-          body(iteratee(data[key], key, data), result);
+      for (let i = 0, _keys = keys(data), len = _keys.length; i < len; i++) {
+        body(iteratee(data[_keys[i]], _keys[i], data), result);
       }
     }
     return result;
   }
 }
+
+export const map = bloop(array, push_to);
+
+export const values = function(list) {
+  return map(list, identity);
+};
+
+export const each = bloop(function(v) {
+  return v;
+}, function() {});
